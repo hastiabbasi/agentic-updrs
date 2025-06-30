@@ -1,0 +1,6 @@
+1) Define the agent's core loop 
+2) Identify key tools to build/wrap APIs
+3) Builda an LLM-based Agent Environment
+4) Combine modalities for better judegement 
+5) Identify clinical safety features 
+6) Create diagram for stack ?

@@ -1,0 +1,12 @@
+# core LangChain and LangGraph
+langchain>=0.1.20
+langgraph>=0.0.40
+
+# Gemini via LangChain
+langchain-google-genai>=0.0.6 # pulls in compatible google-ai-generativelanguage
+
+# optional tools / retriever support 
+langchain-community>=0.0.26
+
+# env variable loading
+python-dotenv>=1.0.0

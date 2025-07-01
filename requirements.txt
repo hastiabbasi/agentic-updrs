@@ -1,4 +1,5 @@
 # to install everything cleanly: pip install -r requirements.txt
+# to activate the virtual environment: source .venv/bin/activate
 
 # core LangChain and LangGraph
 langchain>=0.1.20

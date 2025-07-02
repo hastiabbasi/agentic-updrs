@@ -1,0 +1,9 @@
+langgraph
+langchain>=0.1.14
+langchain-core
+langchain-google-genai
+google-generativeai
+numpy
+mediapipe
+scipy
+opencv-python

@@ -9,3 +9,11 @@ llm = ChatGoogleGenerativeAI(
     temperature=0,
     convert_system_message_to_human=True
 )
+
+class GraphState(TypedDict):
+    user_input: str 
+    video_path: str
+    pose_data: Optional[Any]
+    velocity_data: Optional[Dict[str, float]]
+    tremor_data: Optional[Dict[str, float]]
+    tremor_data: Optional[Dict[str, Any]]

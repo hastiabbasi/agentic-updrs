@@ -61,3 +61,14 @@ def score_finger_tap_node(state: GraphState) -> GraphState:
 def tremor_node(state: GraphState) -> GraphState:
     tremor = analyze_tremor(state["video_path"])
     return {**state, "tremor_data": tremor}
+
+@tool 
+def output_summary_node(state: GraphState) -> str:
+    score = state['score_output']
+    tremor = state.get('tremor_data')
+    return f"""
+    Final UPDRS FT Score: {score['score']}
+    Reason: {score['rationale']}
+    Avg Velocity: {score['velocity']:.2f}
+    Tremor: {tremor if tremor else "Not analyzed"}
+    """

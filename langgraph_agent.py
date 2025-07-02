@@ -4,8 +4,8 @@ from langchain.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 import numpy as np 
 
-# pose extraction tool 
 from utils.pose_utils import extract_keypoints
+# from tools.tremor import analyze_tremor
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
@@ -56,3 +56,8 @@ def score_finger_tap_node(state: GraphState) -> GraphState:
         score = 3
         rationale = "Severe bradykinesia"
     return {**state, "score_output": {"score": score, "rationale": rationale, "velocity": velocity}}
+
+@tool 
+def tremor_node(state: GraphState) -> GraphState:
+    tremor = analyze_tremor(state["video_path"])
+    return {**state, "tremor_data": tremor}

@@ -94,7 +94,7 @@ builder.add_node("planner", planner_node)
 builder.add_node("extract_pose_node", extract_pose_node)
 builder.add_node("analayze_velocity_node", analyze_velocity_node)
 builder.add_node("score_finger_tap_node", score_finger_tap_node)
-builder.add_node("tremor_node", tremor_node)
+# builder.add_node("tremor_node", tremor_node)
 builder.add_node("output_summary_node", output_summary_node)
 
 builder.set_entry_point("planner")

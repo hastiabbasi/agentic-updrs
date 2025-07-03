@@ -6,3 +6,6 @@
   - includes tutorial for passing multimodal input directly to models using LangChain agents, but not implemented because requires OpenAI API key (can probably redo on my own with a dif LLM, might have to change logic slightly)
 - [LangChain Tutorials](https://python.langchain.com/docs/tutorials/)
 - [Chat Models Table](https://python.langchain.com/docs/integrations/chat/)
+
+### To Resolve Import Issues 
+If experiencing import issues in the virtual environment, go to the command palette in VS code (```cmd+shift+p```) --> "Python: Select Interpreter" --> select virtual environment (recommnended)

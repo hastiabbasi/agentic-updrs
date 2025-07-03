@@ -9,3 +9,9 @@
 
 ### To Resolve Import Issues 
 If experiencing import issues in the virtual environment, go to the command palette in VS code (```cmd+shift+p```) --> "Python: Select Interpreter" --> select virtual environment (recommnended)
+
+### Clean Installation
+```pip install -r requirements.txt```
+
+### Activating the Virtual Environment
+```source .venv/bin/activate```

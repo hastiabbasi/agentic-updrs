@@ -57,10 +57,10 @@ def score_finger_tap_node(state: GraphState) -> GraphState:
         rationale = "Severe bradykinesia"
     return {**state, "score_output": {"score": score, "rationale": rationale, "velocity": velocity}}
 
-@tool 
-def tremor_node(state: GraphState) -> GraphState:
-    tremor = analyze_tremor(state["video_path"])
-    return {**state, "tremor_data": tremor}
+# @tool 
+# def tremor_node(state: GraphState) -> GraphState:
+#     tremor = analyze_tremor(state["video_path"])
+#     return {**state, "tremor_data": tremor}
 
 @tool 
 def output_summary_node(state: GraphState) -> str:

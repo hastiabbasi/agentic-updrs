@@ -85,3 +85,5 @@ def planner_node(state: GraphState) -> str:
     - tremor_node (optional if velocity is ambiguous)
     - output_summary_node (when all scoring is complete)
     """
+    response = llm.invoke(prompt)
+    return response.content.strip()

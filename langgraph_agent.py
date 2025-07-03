@@ -105,3 +105,8 @@ builder.add_conditional_edges("planner", planner_node, {
     "tremor_node": "tremor_node",
     "output_summary_node": END,
 })
+
+builder.add_edge("extract_pose_node", "planner")
+builder.add_edge("analyze_velocity_node", "planner")
+builder.add_edge("score_finger_tap_node", "planner")
+builder.add_edge("tremor_node", "planner")

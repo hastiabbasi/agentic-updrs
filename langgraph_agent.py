@@ -110,3 +110,12 @@ builder.add_edge("extract_pose_node", "planner")
 builder.add_edge("analyze_velocity_node", "planner")
 builder.add_edge("score_finger_tap_node", "planner")
 builder.add_edge("tremor_node", "planner")
+
+app = builder.compile()
+
+if __name__ == "__main__":
+    result = app.invoke({
+        "user_input": "Score the patient's finger tapping",
+        "video_path": "tba.mp4"
+    })
+    print(result)

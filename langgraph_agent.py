@@ -72,3 +72,16 @@ def output_summary_node(state: GraphState) -> str:
     Avg Velocity: {score['velocity']:.2f}
     Tremor: {tremor if tremor else "Not analyzed"}
     """
+
+def planner_node(state: GraphState) -> str:
+    prompt = f"""
+    You are an agent trained to assess motor performance in subjects with Parkinson's Disease.
+    You will be used in the scoring of the UPDRS (Unified Parkinson's Disease Rating Scale) Finger Tapping test. 
+    Given the current state: {state}, what should be the next step?
+    Choose from: 
+    - extract_pose_node
+    - analayze_velocity_node
+    - score_finger_tap_node
+    - tremor_node (optional if velocity is ambiguous)
+    - output_summary_node (when all scoring is complete)
+    """

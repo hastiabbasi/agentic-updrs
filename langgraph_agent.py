@@ -110,6 +110,9 @@ def output_summary_node(state: GraphState) -> str:
 
 
 def planner_node(state: GraphState) -> str:
+
+    print("planner_node: current state keys = ", list(state.keys()))
+
     prompt = f"""
     You are an agent trained to assess motor performance in subjects with Parkinson's Disease.
     You will be used in the scoring of the UPDRS (Unified Parkinson's Disease Rating Scale) Finger Tapping test. 
@@ -122,6 +125,8 @@ def planner_node(state: GraphState) -> str:
     - output_summary_node (when all scoring is complete)
     """
     response = llm.invoke(prompt)
+    # debugging statement to log planner decision 
+    print("planner_node chose:", response.content.strip()) 
     return response.content.strip()
 
 builder = StateGraph(GraphState)

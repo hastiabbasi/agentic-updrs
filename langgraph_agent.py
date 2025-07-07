@@ -1,4 +1,5 @@
-from typing import TypedDict, Optional, Dict, Any 
+from typing import Optional, Dict, Any 
+from typing_extensions import TypedDict 
 from langgraph.graph import StateGraph, END
 from langchain.tools import tool 
 from langchain_google_genai import ChatGoogleGenerativeAI

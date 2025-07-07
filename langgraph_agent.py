@@ -125,8 +125,22 @@ def planner_node(state: GraphState) -> str:
     """
     response = llm.invoke(prompt)
     # debugging statement to log planner decision 
-    print("planner_node chose:", response.content.strip()) 
-    return str(response.content).strip()
+    print("planner_node chose:", repr(response.content)) 
+
+    choice = str(response.content).strip()
+
+    allowed = {
+        "extract_pose_node",
+        "analyze_velocity_node",
+        "score_finger_tap_node",
+        "output_summary_node"
+    }
+
+    if choice not in allowed:
+        raise ValueError(f"Invalid planner response: {repr(choice)}")
+
+
+    return choice
 
 builder = StateGraph(GraphState)
 

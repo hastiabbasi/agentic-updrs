@@ -30,11 +30,17 @@ class GraphState(TypedDict):
 
 @tool 
 def extract_pose_node(state: GraphState) -> GraphState:
+    """
+    Extracts pose keypoints from the video using MediaPipe and returns them in the state.
+    """
     pose = extract_keypoints(state['video_path'], joints=["RIGHT_INDEX", "RIGHT_THUMB"])
     return {**state, "pose_data": pose}
 
 @tool 
 def analyze_velocity_node(state: GraphState) -> GraphState:
+    """
+    Analyzes the velocity of right index figure of the patient in the input video.
+    """
     keypoints = state['pose_data']
     velocities = []
     for i in range(1, len(keypoints)):
@@ -48,6 +54,9 @@ def analyze_velocity_node(state: GraphState) -> GraphState:
     
 @tool
 def score_finger_tap_node(state: GraphState) -> GraphState:
+    """
+    Provides a score for the finger tapping based on the velocity of the finger movement (Normal, Slight Slowing, Moderate, Severe)
+    """
     velocity = state["velocity_data"]["avg_velocity"]
 
     if velocity > 1.5:
@@ -71,6 +80,9 @@ def score_finger_tap_node(state: GraphState) -> GraphState:
 
 @tool 
 def output_summary_node(state: GraphState) -> str:
+    """
+    Returns the final UPDRS FT score, rationale, average velocity, and tremor analysis as a string.
+    """
     score = state['score_output']
     tremor = state.get('tremor_data')
     return f"""

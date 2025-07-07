@@ -26,7 +26,7 @@ class GraphState(TypedDict):
     pose_data: Optional[Any]
     velocity_data: Optional[Dict[str, float]]
     tremor_data: Optional[Dict[str, float]]
-    
+
 @tool 
 def extract_pose_node(state: GraphState) -> GraphState:
     """
@@ -118,7 +118,7 @@ def planner_node(state: GraphState) -> str:
     Given the current state: {state}, what should be the next step?
     Choose from: 
     - extract_pose_node
-    - analayze_velocity_node
+    - analyze_velocity_node
     - score_finger_tap_node
     - tremor_node (optional if velocity is ambiguous)
     - output_summary_node (when all scoring is complete)

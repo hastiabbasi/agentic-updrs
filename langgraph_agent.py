@@ -53,7 +53,7 @@ def analyze_velocity_node(state: GraphState) -> GraphState:
             velocities.append(np.sqrt(dx**2 + dy**2) * 30)
     mean_vel = float(np.mean(velocities)) if velocities else 0.0
     # debugging statement to confirm what this tool is returning 
-    print("analyze_velocity_node: avg_velocity = {avg_velocity:.4f} over {len(velocities)} intervals")
+    print(f"analyze_velocity_node: avg_velocity = {mean_vel:.4f} over {len(velocities)} intervals")
     return {**state, "velocity_data": {"avg_velocity": mean_vel}}
     
 @tool
@@ -75,6 +75,8 @@ def score_finger_tap_node(state: GraphState) -> GraphState:
     else:
         score = 3
         rationale = "Severe bradykinesia"
+    # debugging statement to confirm what this tool is returning 
+    print(f"score_finger_tap_node: score = {score}, rationale = {rationale}")
     return {**state, "score_output": {"score": score, "rationale": rationale, "velocity": velocity}}
 
 # @tool 

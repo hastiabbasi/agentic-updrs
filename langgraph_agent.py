@@ -94,13 +94,20 @@ def output_summary_node(state: GraphState) -> str:
 
     score = state.get('score_output', {})
     tremor = state.get('tremor_data', None)
-    
-    return f"""
+
+    output = f"""
     Final UPDRS FT Score: {score['score']}
     Reason: {score['rationale']}
     Avg Velocity: {score['velocity']:.2f}
     Tremor: {tremor if tremor else "Not analyzed"}
     """
+
+    # debugging statement to confirm what this tool is returning 
+    print("output_summary_node:")
+    print(output)
+
+    return output
+
 
 def planner_node(state: GraphState) -> str:
     prompt = f"""

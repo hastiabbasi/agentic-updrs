@@ -51,8 +51,8 @@ def analyze_velocity_node(state: GraphState) -> GraphState:
             dx = curr["RIGHT_INDEX"][0] - prev["RIGHT_INDEX"][0]
             dy = curr["RIGHT_INDEX"][1] - prev["RIGHT_INDEX"][1]
             velocities.append(np.sqrt(dx**2 + dy**2) * 30)
-        mean_vel = float(np.mean(velocities)) if velocities else 0.0
-        return {**state, "velocity_data": {"avg_velocity": mean_vel}}
+    mean_vel = float(np.mean(velocities)) if velocities else 0.0
+    return {**state, "velocity_data": {"avg_velocity": mean_vel}}
     
 @tool
 def score_finger_tap_node(state: GraphState) -> GraphState:

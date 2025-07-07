@@ -7,6 +7,12 @@ import numpy as np
 from utils.pose_utils import extract_keypoints
 # from tools.tremor import analyze_tremor
 
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
+print("GOOGLE_API_KEY found: ", os.getenv("GOOGLE_API_KEY") is not None)
+
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
@@ -116,6 +122,6 @@ app = builder.compile()
 if __name__ == "__main__":
     result = app.invoke({
         "user_input": "Score the patient's finger tapping",
-        "video_path": "tba.mp4"
+        "video_path": "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
     })
     print(result)

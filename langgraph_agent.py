@@ -89,8 +89,12 @@ def output_summary_node(state: GraphState) -> str:
     """
     Returns the final UPDRS FT score, rationale, average velocity, and tremor analysis as a string.
     """
-    score = state['score_output']
-    tremor = state.get('tremor_data')
+    # score = state['score_output']
+    # tremor = state.get('tremor_data')
+
+    score = state.get('score_output', {})
+    tremor = state.get('tremor_data', None)
+    
     return f"""
     Final UPDRS FT Score: {score['score']}
     Reason: {score['rationale']}

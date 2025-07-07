@@ -34,6 +34,8 @@ def extract_pose_node(state: GraphState) -> GraphState:
     Extracts pose keypoints from the video using MediaPipe and returns them in the state.
     """
     pose = extract_keypoints(state['video_path'], joints=["RIGHT_INDEX", "RIGHT_THUMB"])
+    # debugging statement to confirm what this tool is returning
+    print("extract_pose_node returning:", type(result))
     return {**state, "pose_data": pose}
 
 @tool 

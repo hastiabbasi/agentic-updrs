@@ -26,8 +26,7 @@ class GraphState(TypedDict):
     pose_data: Optional[Any]
     velocity_data: Optional[Dict[str, float]]
     tremor_data: Optional[Dict[str, float]]
-    tremor_data: Optional[Dict[str, Any]]
-
+    
 @tool 
 def extract_pose_node(state: GraphState) -> GraphState:
     """

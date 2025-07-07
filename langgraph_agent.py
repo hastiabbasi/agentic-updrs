@@ -126,7 +126,7 @@ def planner_node(state: GraphState) -> str:
     response = llm.invoke(prompt)
     # debugging statement to log planner decision 
     print("planner_node chose:", response.content.strip()) 
-    return response.content.strip()
+    return str(response.content).strip()
 
 builder = StateGraph(GraphState)
 

@@ -128,7 +128,7 @@ builder.add_conditional_edges("planner", planner_node, {
 builder.add_edge("extract_pose_node", "planner")
 builder.add_edge("analyze_velocity_node", "planner")
 builder.add_edge("score_finger_tap_node", "planner")
-builder.add_edge("tremor_node", "planner")
+# builder.add_edge("tremor_node", "planner")
 
 app = builder.compile()
 

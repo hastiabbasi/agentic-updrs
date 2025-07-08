@@ -65,3 +65,13 @@ def score_updrs(avg_velocity: float) -> Dict[str, Any]:
 # tool bindings for LangGraph
 tools = [get_pose_data, analyze_finger_velocity, score_updrs]
 tools_by_name = {t.name: t for t in tools}
+
+# initialize gemini 
+llm = ChatGoogleGenerativeAI(
+    model = "gemini-2.5-pro",
+    temperature = 0.2,
+    convert_system_message_to_human=True,
+    streaming=False
+)
+
+model = llm.bind_tools(tools)

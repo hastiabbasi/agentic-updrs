@@ -42,3 +42,22 @@ def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
     avg_velocity = float(np.mean(velocities)) if velocities else 0.0
     print(f"analyze_finger_velocity: avg_velocity = {avg_velocity:.4f}")
     return {"avg_velocity": avg_velocity}
+
+@tool
+def score_updrs(avg_velocity: float) -> Dict[str, Any]:
+    """Scores UPDRS Finger Tapping task based on average velocity."""
+    if avg_velocity > 1.5:
+        score = 0
+        rationale = "Normal tapping speed"
+    elif avg_velocity > 1.0:
+        score = 1
+        rationale = "Slight slowing"
+    elif avg_velocity > 0.5:
+        score = 2
+        rationale = "Moderate slowing"
+    else:
+        score = 3
+        rationale = "Sever bradykinesia"
+
+    print(f"score_updrs: score = {score}, rationale = {rationale}")
+    return {"score": score, "rationale": rationale, "velocity": avg_velocity}

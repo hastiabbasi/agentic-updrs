@@ -33,7 +33,8 @@ class GraphState(TypedDict):
     velocity_data: Optional[Dict[str, float]]
     tremor_data: Optional[Dict[str, float]]
 
-def _extract_pose_node(state: GraphState) -> GraphState:
+@tool
+def extract_pose_node(state: GraphState) -> GraphState:
     """
     Extracts pose keypoints from the video using MediaPipe and returns them in the state.
     """
@@ -41,7 +42,6 @@ def _extract_pose_node(state: GraphState) -> GraphState:
     # debugging statement to confirm what this tool is returning
     print("extract_pose_node: extracted", len(pose), f"frames of keypoints")
     return {**state, "pose_data": pose}
-extract_pose_node = tool(name="extract_pose_node")(_extract_pose_node)
 
 @tool 
 def analyze_velocity_node(state: GraphState) -> GraphState:

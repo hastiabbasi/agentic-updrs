@@ -19,7 +19,9 @@ print("GOOGLE_API_KEY found: ", os.getenv("GOOGLE_API_KEY") is not None)
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
-    convert_system_message_to_human=True
+    convert_system_message_to_human=True,
+    # disable stream buffering to ensure logs appear in the right order & not asynchronously
+    streaming=False
 )
 
 class GraphState(TypedDict):

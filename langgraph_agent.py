@@ -13,8 +13,6 @@ import os
 
 import re 
 
-from langchain_core.tools import tool
-
 load_dotenv()
 print("GOOGLE_API_KEY found: ", os.getenv("GOOGLE_API_KEY") is not None)
 

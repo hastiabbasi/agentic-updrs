@@ -11,6 +11,8 @@ from utils.pose_utils import extract_keypoints
 from dotenv import load_dotenv
 import os 
 
+import re 
+
 load_dotenv()
 print("GOOGLE_API_KEY found: ", os.getenv("GOOGLE_API_KEY") is not None)
 
@@ -116,30 +118,24 @@ def planner_node(state: GraphState) -> str:
     You are an agent trained to assess motor performance in subjects with Parkinson's Disease.
     You will be used in the scoring of the UPDRS (Unified Parkinson's Disease Rating Scale) Finger Tapping test. 
     Given the current state: {state}, what should be the next step?
-    Choose from: 
+    Respond with only one of: 
     - extract_pose_node
     - analyze_velocity_node
     - score_finger_tap_node
-    - tremor_node (optional if velocity is ambiguous)
     - output_summary_node (when all scoring is complete)
     """
     response = llm.invoke(prompt)
-    # debugging statement to log planner decision 
-    print("planner_node chose:", repr(response.content)) 
+    raw = str(response.content).strip()
+    print("Raw planner output:", repr(raw))
 
-    choice = str(response.content).strip()
+    # extract only valid step name using regex 
+    match = re.search(r"(extract_pose_node|analyze_velocity_node|score_finger_tap_node|output_summary_node)", raw) 
 
-    allowed = {
-        "extract_pose_node",
-        "analyze_velocity_node",
-        "score_finger_tap_node",
-        "output_summary_node"
-    }
+    if not match:
+        raise ValueError(f"Invalid planner output: {repr(raw)}")
 
-    if choice not in allowed:
-        raise ValueError(f"Invalid planner response: {repr(choice)}")
-
-
+    choice = match.group(1)
+    print("Final planner choice:", choice)
     return choice
 
 builder = StateGraph(GraphState)

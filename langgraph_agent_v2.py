@@ -105,3 +105,15 @@ def should_continue(state: GraphState) -> str:
     if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
         return "tools"
     return "end"
+
+class AgentState(TypedDict):
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+
+workflow = StateGraph(AgentState)
+workflow.add_node("llm", call_model)
+workflow.add_node("tools", call_tool)
+workflow.set_entry_point("llm")
+workflow.add_conditional_edges("llm", should_continue, {
+    "tools": "tools",
+    "end": END,
+})

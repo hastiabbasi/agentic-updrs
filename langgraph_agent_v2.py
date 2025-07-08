@@ -7,6 +7,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from utils.pose_utils import extract_keypoints
 import numpy as np
 
+from langchain_core.messages import ToolMessage, HumanMessage, BaseMessage
+from langgraph.graph.message import add_messages
+from typing import Annotated, Sequence
+from langchain_core.runnables import RunnableConfig
+
 # load env variables
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "GOOGLE_API_KEY not set in environment."
@@ -75,3 +80,28 @@ llm = ChatGoogleGenerativeAI(
 )
 
 model = llm.bind_tools(tools)
+
+# LangGraph nodes
+def call_model(state: GraphState, config: RunnableConfig) -> Dict:
+    user_msg = HumanMessage(content=state["user_input"])
+    response = model.invoke([user_msg], config)
+    return {"messages": [response]}
+
+def call_tool(state: GraphState) -> Dict:
+    messages = state.get("messages", [])
+    last_msg = messages[-1]
+    tool_outputs = []
+
+    for call in last_msg.tool_calls:
+        tool = tools_by_name[call["name"]]
+        result = tool.invoke(call["args"])
+        tool_outputs.append(ToolMessage(content=result, name=call["name"], tool_call_id=call["id"]))
+    
+    return {"messages": tool_outputs}
+
+def should_continue(state: GraphState) -> str:
+    messages = state.get("messages", [])
+
+    if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+        return "tools"
+    return "end"

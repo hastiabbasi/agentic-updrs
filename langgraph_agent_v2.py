@@ -83,8 +83,8 @@ model = llm.bind_tools(tools)
 
 # LangGraph nodes
 def call_model(state: GraphState, config: RunnableConfig) -> Dict:
-    user_msg = HumanMessage(content=state["user_input"])
-    response = model.invoke([user_msg], config)
+    # use existing message chain
+    response = model.invoke(["messages"], config)
     return {"messages": [response]}
 
 def call_tool(state: GraphState) -> Dict:
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     prompt = f"Extract the pose and score the UPDRS finger tapping for this video: {video_path}"
     inputs = {"messages": [HumanMessage(content=prompt)]}
 
-    for step in graph.straem(inputs, stream_node="values"):
+    for step in graph.stream(inputs, stream_mode="values"):
         last = step["messages"][-1]
         print("Step: ")
         last.pretty_print()

@@ -15,6 +15,9 @@ from langchain_core.runnables import RunnableConfig
 # import for visual representation of graph
 from IPython.display import Image, display
 
+# import for video input
+from pydantic import BaseModel, Field
+
 # load env variables
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "GOOGLE_API_KEY not set in environment."
@@ -26,6 +29,9 @@ class GraphState(TypedDict):
     pose_data: Optional[Any]
     velocity_data: Optional[Dict[str, float]]
     score_output: Optional[dict[str, Any]]
+
+class PoseInput(BaseModel):
+    video_path: str = Field(description="The full local path to the video to analyze for UPDRS scoring.")
 
 @tool
 def get_pose_data(video_path: str) -> Dict[str, Any]:

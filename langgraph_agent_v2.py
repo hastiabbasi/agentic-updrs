@@ -33,10 +33,10 @@ class GraphState(TypedDict):
 class PoseInput(BaseModel):
     video_path: str = Field(description="The full local path to the video to analyze for UPDRS scoring.")
 
-@tool
-def get_pose_data(video_path: str) -> Dict[str, Any]:
+@tool("get_pose_data", args_schema=PoseInput)
+def get_pose_data_tool(input: PoseInput) -> Dict:
     """Extracts RIGHT_INDEX and RIGHT_THUMB keypoints from a video using MediaPipe."""
-    pose = extract_keypoints(video_path, joints=["RIGHT_INDEX", "RIGHT_THUMB"])
+    pose = extract_keypoints(input.video_path, joints=["RIGHT_INDEX", "RIGHT_THUMB"])
     print(f"get_pose_data: extracted {len(pose)} frames")
     return {"pose_data": pose}
 

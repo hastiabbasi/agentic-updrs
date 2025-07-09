@@ -77,7 +77,7 @@ def score_updrs(avg_velocity: float) -> Dict[str, Any]:
     return {"score": score, "rationale": rationale, "velocity": avg_velocity}
 
 # tool bindings for LangGraph
-tools = [get_pose_data, analyze_finger_velocity, score_updrs]
+tools = [get_pose_data_tool, analyze_finger_velocity, score_updrs]
 tools_by_name = {t.name: t for t in tools}
 
 # initialize gemini 

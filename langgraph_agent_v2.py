@@ -12,6 +12,9 @@ from langgraph.graph.message import add_messages
 from typing import Annotated, Sequence
 from langchain_core.runnables import RunnableConfig
 
+# import for visual representation of graph
+from IPython.display import Image, display
+
 # load env variables
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "GOOGLE_API_KEY not set in environment."
@@ -130,3 +133,6 @@ if __name__ == "__main__":
         last = step["messages"][-1]
         print("Step: ")
         last.pretty_print()
+
+    # visual representation of graph
+    display(Image(graph.get_graph().draw_mermaid_png()))

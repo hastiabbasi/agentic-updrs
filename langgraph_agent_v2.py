@@ -139,11 +139,6 @@ if __name__ == "__main__":
     inputs = {
         "messages": [
             HumanMessage(content=prompt),
-            ToolMessage(
-                name="get_pose_data",
-                tool_call_id="manual-1",
-                content={"video_path": "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"}
-            )
         ]
     }
 

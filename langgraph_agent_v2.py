@@ -94,6 +94,7 @@ model = llm.bind_tools(tools)
 def call_model(state: GraphState, config: RunnableConfig) -> Dict:
     # use existing message chain
     response = model.invoke(["messages"], config)
+    print("tool_calls:", getattr(response, "tool_calls", None))
     return {"messages": [response]}
 
 def call_tool(state: GraphState) -> Dict:

@@ -125,14 +125,15 @@ workflow.add_edge("tools", "llm")
 graph = workflow.compile()
 
 if __name__ == "__main__":
+    
     video_path = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
-    prompt = f"Extract the pose and score the UPDRS finger tapping for this video: {video_path}"
+    prompt = f"Please score the UPDRS finger tapping severity. The video path is: {video_path}"
     inputs = {"messages": [HumanMessage(content=prompt)]}
 
     for step in graph.stream(inputs, stream_mode="values"):
         last = step["messages"][-1]
         print("Step: ")
         last.pretty_print()
-
+    
     # visual representation of graph
     display(Image(graph.get_graph().draw_mermaid_png()))

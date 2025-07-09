@@ -134,7 +134,17 @@ if __name__ == "__main__":
     
     video_path = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
     prompt = f"Please score the UPDRS finger tapping severity. The video path is: {video_path}"
-    inputs = {"messages": [HumanMessage(content=prompt)]}
+    # inputs = {"messages": [HumanMessage(content=prompt)]}
+    inputs = {
+        "messages": [
+            HumanMessage(content=prompt),
+            ToolMessage(
+                name="get_pose_data",
+                tool_call_id="manual-1",
+                content={"video_path": {video_path}}
+            )
+        ]
+    }
 
     for step in graph.stream(inputs, stream_mode="values"):
         last = step["messages"][-1]

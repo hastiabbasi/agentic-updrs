@@ -37,3 +37,7 @@ user_prompt = f"Please run get_pose_data with video_path: {video_path}"
 # send prompt
 messages = [HumanMessage(content=user_prompt)]
 response = model.invoke(messages)
+
+# output 
+print("\n AI Message: ", response.content)
+print("tool_calls: ", getattr(response, "tool_calls", None))

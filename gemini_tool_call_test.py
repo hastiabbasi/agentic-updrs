@@ -12,3 +12,9 @@ assert os.getenv("GOOGLE_API_KEY"), "Missing GOOGLE_API_KEY in .env"
 # default tool input schema 
 class PoseInput(BaseModel):
     video_path: str = Field(description="Full local path to a Parkinson's finger tapping video.")
+
+# dummy tool
+@tool("get_pose_data", args_schema=PoseInput)
+def get_pose_data(input: PoseInput) -> dict:
+    print(f"get_pose_data() called with {input.video_path}")
+    return{"message": f"Processed video at {input.video_path}"}

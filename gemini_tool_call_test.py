@@ -61,4 +61,17 @@ tool_msg = ToolMessage(
 New message list includes:
 1) Original user prompt
 2) Gemini's tool call
-3) Our ToolMessage response'''
+3) Our ToolMessage response
+'''
+new_messages = [
+    HumanMessage(content=user_prompt),
+    # Gemini's tool call message
+    response,
+    # tool's result
+    tool_msg
+]
+
+followup_response = model.invoke(new_messages)
+
+print("\n Gemini follow-up:", followup_response.content)
+

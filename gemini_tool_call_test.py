@@ -33,3 +33,7 @@ model = llm.bind_tools([get_pose_data])
 # test prompt 
 video_path = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
 user_prompt = f"Please run get_pose_data with video_path: {video_path}"
+
+# send prompt
+messages = [HumanMessage(content=user_prompt)]
+response = model.invoke(messages)

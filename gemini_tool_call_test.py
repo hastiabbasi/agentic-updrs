@@ -16,6 +16,7 @@ class PoseInput(BaseModel):
 # dummy tool
 @tool("get_pose_data", args_schema=PoseInput)
 def get_pose_data(input: PoseInput) -> dict:
+    """Extracts RIGHT_INDEX and RIGHT_THUMB keypoints from a video using MediaPipe."""
     print(f"get_pose_data() called with {input.video_path}")
     return{"message": f"Processed video at {input.video_path}"}
 

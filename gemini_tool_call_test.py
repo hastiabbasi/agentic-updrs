@@ -26,3 +26,6 @@ llm = ChatGoogleGenerativeAI(
     convert_system_message_to_human=True,
     streaming=False
 )
+
+# tool binding 
+model = llm.bind_tools([get_pose_data])

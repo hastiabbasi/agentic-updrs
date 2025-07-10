@@ -1,0 +1,2 @@
+AI Message:  
+tool_calls:  [{'name': 'get_pose_data', 'args': {'video_path': '/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4'}, 'id': '443b5ab7-5804-4184-ac4f-1b55b7e07d89', 'type': 'tool_call'}]

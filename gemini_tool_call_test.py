@@ -18,3 +18,11 @@ class PoseInput(BaseModel):
 def get_pose_data(input: PoseInput) -> dict:
     print(f"get_pose_data() called with {input.video_path}")
     return{"message": f"Processed video at {input.video_path}"}
+
+# bind tool to gemini 
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-pro",
+    temperature=0.0,
+    convert_system_message_to_human=True,
+    streaming=False
+)

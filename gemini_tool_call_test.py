@@ -5,6 +5,8 @@ from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 
+from langchain_core.messages import ToolMessage 
+
 # load API key
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "Missing GOOGLE_API_KEY in .env"
@@ -42,3 +44,21 @@ response = model.invoke(messages)
 # output 
 print("\n AI Message: ", response.content)
 print("tool_calls: ", getattr(response, "tool_calls", None))
+
+tool_call = response.tool_calls[0]
+
+# call the actual tool
+tool_result = get_pose_data.invoke(tool_call["args"])
+
+# return the result as a ToolMessage so Gemini can reason on it 
+tool_msg = ToolMessage(
+    content=tool_result,
+    name=tool_call["name"],
+    tool_call_id=tool_call["id"]
+)
+
+'''
+New message list includes:
+1) Original user prompt
+2) Gemini's tool call
+3) Our ToolMessage response'''

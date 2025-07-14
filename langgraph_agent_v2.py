@@ -52,7 +52,8 @@ def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
             dy = curr["RIGHT_INDEX"][1] - prev["RIGHT_INDEX"][1]
             velocities.append(np.sqrt(dx ** 2 + dy ** 2) * 30)
         
-    avg_velocity = float(np.mean(velocities)) if velocities else 0.0
+    # avg_velocity = float(np.mean(velocities)) if velocities else 0.0
+    avg_velocity = float(np.mean(velocities))
     print(f"analyze_finger_velocity: avg_velocity = {avg_velocity:.4f}")
     return {"avg_velocity": avg_velocity}
 

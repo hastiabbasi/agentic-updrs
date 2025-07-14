@@ -36,24 +36,43 @@ class PoseInput(BaseModel):
 def get_pose_data_tool(input: PoseInput) -> Dict:
     """Extracts RIGHT_INDEX and RIGHT_THUMB keypoints from a video using MediaPipe."""
     pose = extract_keypoints(input.video_path, joints=["RIGHT_INDEX", "RIGHT_THUMB"])
-    print(f"get_pose_data: extracted {len(pose)} frames")
+    # print(f"get_pose_data: extracted {len(pose)} frames")
     return {"pose_data": pose}
 
 @tool 
 def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
     """Computes average tapping velocity from pose keypoints. Assume pose_data is a list of frames, each frame is a dict of joint name (x,y)."""
     velocities = []
-    for i in range(1, len(pose_data)):
+
+    frame_count = len(pose_data)
+    print(f"Received {frame_count} pose frames.")
+
+    for i in range(1, frame_count):
         prev = pose_data[i - 1]
         curr = pose_data[i]
 
+        # check both frames (prev and curr) contain the keypoint
         if "RIGHT_INDEX" in prev and "RIGHT_INDEX" in curr:
-            dx = curr["RIGHT_INDEX"][0] - prev["RIGHT_INDEX"][0]
-            dy = curr["RIGHT_INDEX"][1] - prev["RIGHT_INDEX"][1]
-            velocities.append(np.sqrt(dx ** 2 + dy ** 2) * 30)
+            prev_x, prev_y = prev["RIGHT_INDEX"]
+            curr_x, curr_y = curr["RIGHT_INDEX"]
+
+            dx = curr_x - prev_x
+            dy = curr_y - prev_y
+
+            # dx = curr["RIGHT_INDEX"][0] - prev["RIGHT_INDEX"][0]
+            # dy = curr["RIGHT_INDEX"][1] - prev["RIGHT_INDEX"][1]
+
+            # making the assumption that fps = 30
+            velocity = np.sqrt(dx**2 + dy**2) * 30
+            velocities.append(velocity)
+        else:
+            print(f"Missing RIGHT_INDEX in frame {i-1} or {i}")
+
+    if not velocities:
+        raise ValueError("No valid RIGHT_INDEX velocities were computed.")
         
     # avg_velocity = float(np.mean(velocities)) if velocities else 0.0
-    avg_velocity = float(np.mean(velocities)) if velocities else 0.0
+    avg_velocity = float(np.mean(velocities)) 
     print(f"analyze_finger_velocity: avg_velocity = {avg_velocity:.4f}")
     return {"avg_velocity": avg_velocity}
 

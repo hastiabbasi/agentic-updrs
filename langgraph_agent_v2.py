@@ -90,15 +90,18 @@ llm = ChatGoogleGenerativeAI(
 
 model = llm.bind_tools(tools)
 
+class AgentState(TypedDict):
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+
 # LangGraph nodes
-def call_model(state: GraphState, config: RunnableConfig) -> Dict:
+def call_model(state: AgentState, config: RunnableConfig) -> Dict:
     # use existing message chain
     response = model.invoke(state["messages"], config)
     print("tool_calls:", getattr(response, "tool_calls", None))
     print("Gemini message content: ", response.content)
     return {"messages": [response]}
 
-def call_tool(state: GraphState) -> Dict:
+def call_tool(state: AgentState) -> Dict:
     messages = state.get("messages", [])
     last_msg = messages[-1]
     tool_outputs = []
@@ -110,15 +113,12 @@ def call_tool(state: GraphState) -> Dict:
     
     return {"messages": tool_outputs}
 
-def should_continue(state: GraphState) -> str:
+def should_continue(state: AgentState) -> str:
     messages = state.get("messages", [])
 
     if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
         return "tools"
     return "end"
-
-class AgentState(TypedDict):
-    messages: Annotated[Sequence[BaseMessage], add_messages]
 
 workflow = StateGraph(AgentState)
 workflow.add_node("llm", call_model)

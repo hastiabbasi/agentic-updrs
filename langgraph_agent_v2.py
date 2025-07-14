@@ -41,7 +41,7 @@ def get_pose_data_tool(input: PoseInput) -> Dict:
 
 @tool 
 def analyze_tap_amplitude(pose_data: list[Dict]) -> Dict:
-    """Analyze tapping amplitude by measuring thumb-index distance per frame, Returns average amplitude and tap range."""
+    """Analyze tapping amplitude by measuring thumb-index distance per frame. Returns average amplitude and tap range."""
 
     distances = []
 
@@ -67,23 +67,25 @@ def analyze_tap_amplitude(pose_data: list[Dict]) -> Dict:
  
 
 @tool
-def score_updrs(avg_velocity: float) -> Dict[str, Any]:
-    """Scores UPDRS Finger Tapping task based on average velocity."""
-    if avg_velocity > 1.5:
+def score_updrs(avg_amplitude: float) -> dict:
+    """Score UPDRS finger tapping based on the average thumb-index amplitude. Assume normalized coordinates."""
+
+    if avg_amplitude > 0.04:
         score = 0
-        rationale = "Normal tapping speed"
-    elif avg_velocity > 1.0:
+        rationale = "Normal tapping amplitude"
+    elif avg_amplitude > 0.025: 
         score = 1
-        rationale = "Slight slowing"
-    elif avg_velocity > 0.5:
-        score = 2
-        rationale = "Moderate slowing"
-    else:
+        rationale = "Slightly reduced amplitude"
+    elif avg_amplitude > 0.015:
+        score = 2 
+        rationale = "Moderately reduced amplitude"
+    else: 
         score = 3
-        rationale = "Severe bradykinesia"
+        rationale = "Severely reduced amplitude"
 
     print(f"score_updrs: score = {score}, rationale = {rationale}")
-    return {"score": score, "rationale": rationale, "velocity": avg_velocity}
+    return {"score": score, "rationale": rationale, "avg_amplitude": avg_amplitude}
+
 
 # tool bindings for LangGraph
 tools = [get_pose_data_tool, analyze_tap_amplitude, score_updrs]

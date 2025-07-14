@@ -98,15 +98,18 @@ def call_model(state: AgentState, config: RunnableConfig) -> Dict:
     return {"messages": [response]}
 
 def call_tool(state: AgentState) -> Dict:
-    messages = state.get("messages", [])
-    last_msg = messages[-1]
     tool_outputs = []
+    last_msg = state["messages"][-1]
 
-    for call in last_msg.tool_calls:
+    for call in getattr(last_msg, "tool_calls", []):
         tool = tools_by_name[call["name"]]
         result = tool.invoke(call["args"])
-        tool_outputs.append(ToolMessage(content=result, name=call["name"], tool_call_id=call["id"]))
-    
+        tool_outputs.append(ToolMessage(
+            content = result,
+            name = call["name"],
+            tool_call_id = call["id"]
+        ))
+
     return {"messages": tool_outputs}
 
 def should_continue(state: AgentState) -> str:

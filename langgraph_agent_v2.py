@@ -103,13 +103,21 @@ def call_tool(state: AgentState) -> Dict:
 
     for call in getattr(last_msg, "tool_calls", []):
         tool = tools_by_name[call["name"]]
-        result = tool.invoke(call["args"])
+
+        try:
+            result = tool.invoke(call["args"])
+        except TypeError:
+            # in case tool expects an input object instead of kwargs
+            result = tool.func(PoseInput(**call["args"]))
+
         tool_outputs.append(ToolMessage(
-            content = result,
+            content = result, 
             name = call["name"],
             tool_call_id = call["id"]
         ))
 
+    # debug statement 
+    print(f"Calling {call['name']} with args: {call['args']}")
     return {"messages": tool_outputs}
 
 def should_continue(state: AgentState) -> str:

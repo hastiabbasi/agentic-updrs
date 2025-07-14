@@ -1,7 +1,7 @@
 import mediapipe as mp
 import cv2
 
-def extract_keypoints(video_path: str, joints: list = None, max_frames: int = 10) -> list:
+def extract_keypoints(video_path: str, joints: list = None, max_frames: int = 120) -> list:
     mp_pose = mp.solutions.pose
     pose = mp_pose.Pose(static_image_mode=False)
     cap = cv2.VideoCapture(video_path)

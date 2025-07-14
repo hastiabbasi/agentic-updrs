@@ -113,7 +113,7 @@ def call_tool(state: AgentState) -> Dict:
     return {"messages": tool_outputs}
 
 def should_continue(state: AgentState) -> str:
-    messages = state.get("messages", [])
+    messages = state["messages"]
 
     if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
         return "tools"

@@ -58,7 +58,7 @@ def analyze_tap_amplitude(pose_data: list[Dict]) -> Dict:
     
     avg_amplitude = float(np.mean(distances))
     range_amplitude = float(np.max(distances) - np.min(distances))
-    print(f"analyze_tap_amplitude: avg = {avg_amplitude:.4f}, rnage = {range_amplitude:.4f}")
+    print(f"analyze_tap_amplitude: avg = {avg_amplitude:.4f}, range = {range_amplitude:.4f}")
 
     return {
         "avg_amplitude": avg_amplitude,

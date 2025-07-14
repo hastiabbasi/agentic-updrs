@@ -21,11 +21,11 @@ from pydantic import BaseModel, Field
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "GOOGLE_API_KEY not set in environment."
 
-# define state
-class GraphState(TypedDict):
-    user_input: str
-    video_path: str
-    pose_data: Optional[Any]
+# replaced GraphState --> AgentState 
+class AgentState(TypedDict):
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+    video_path: Optional[str]
+    pose_data: Optional[any]
     velocity_data: Optional[Dict[str, float]]
     score_output: Optional[Dict[str, Any]]
 

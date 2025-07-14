@@ -40,45 +40,31 @@ def get_pose_data_tool(input: PoseInput) -> Dict:
     return {"pose_data": pose}
 
 @tool 
-def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
-    """Computes average tapping velocity from pose keypoints. Assume pose_data is a list of frames, each frame is a dict of joint name (x,y)."""
-    velocities = []
+def analyze_tap_amplitude(pose_data: list[Dict]) -> Dict:
+    """Analyze tapping amplitude by measuring thumb-index distance per frame, Returns average amplitude and tap range."""
 
-    frame_count = len(pose_data)
-    print(f"Received {frame_count} pose frames.")
+    distances = []
 
-    for i in range(1, frame_count):
-        prev = pose_data[i - 1]
-        curr = pose_data[i]
+    for i, frame in enumerate(pose_data):
+        if "RIGHT_INDEX" in frame and "RIGHT_THUMB" in frame:
+            x1, y1 = frame["RIGHT_INDEX"]
+            x2, y2 = frame["RIGHT_THUMB"]
 
-        # check both frames (prev and curr) contain the keypoint
-        if "RIGHT_INDEX" in prev and "RIGHT_INDEX" in curr:
-            prev_x, prev_y = prev["RIGHT_INDEX"]
-            curr_x, curr_y = curr["RIGHT_INDEX"]
+            dist = np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+            distances.append(dist)
 
-            dx = curr_x - prev_x
-            dy = curr_y - prev_y
-
-            # dx = curr["RIGHT_INDEX"][0] - prev["RIGHT_INDEX"][0]
-            # dy = curr["RIGHT_INDEX"][1] - prev["RIGHT_INDEX"][1]
-
-            # making the assumption that fps = 30
-            velocity = np.sqrt(dx**2 + dy**2) * 30
-            velocities.append(velocity)
-        else:
-            print(f"Missing RIGHT_INDEX in frame {i-1} or {i}")
-
-    if not velocities:
-        raise ValueError("No valid RIGHT_INDEX velocities were computed.")
-        
-    velocity_sum = 0
+    if not distances:
+        raise ValueError("No valid thumb-index distances found.")
     
-    for x in range(0, frame_count - 1):
-        velocity_sum += velocities[frame_count]
-    
-    avg_velocity = float(velocity_sum / frame_count) 
-    print(f"analyze_finger_velocity: avg_velocity = {avg_velocity:.4f}")
-    return {"avg_velocity": avg_velocity}
+    avg_amplitude = float(np.mean(distances))
+    range_amplitude = float(np.max(distances) - np.min(distances))
+    print(f"analyze_tap_amplitude: avg = {avg_amplitude:.4f}, rnage = {range_amplitude:.4f}")
+
+    return {
+        "avg_amplitude": avg_amplitude,
+        "range_amplitude": range_amplitude 
+    }
+ 
 
 @tool
 def score_updrs(avg_velocity: float) -> Dict[str, Any]:
@@ -100,7 +86,7 @@ def score_updrs(avg_velocity: float) -> Dict[str, Any]:
     return {"score": score, "rationale": rationale, "velocity": avg_velocity}
 
 # tool bindings for LangGraph
-tools = [get_pose_data_tool, analyze_finger_velocity, score_updrs]
+tools = [get_pose_data_tool, analyze_tap_amplitude, score_updrs]
 tools_by_name = {t.name: t for t in tools}
 
 # initialize gemini 

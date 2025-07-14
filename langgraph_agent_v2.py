@@ -71,8 +71,12 @@ def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
     if not velocities:
         raise ValueError("No valid RIGHT_INDEX velocities were computed.")
         
-    # avg_velocity = float(np.mean(velocities)) if velocities else 0.0
-    avg_velocity = float(np.mean(velocities)) 
+    velocity_sum = 0
+    
+    for x in range(0, frame_count - 1):
+        velocity_sum += velocities[frame_count]
+    
+    avg_velocity = float(velocity_sum / frame_count) 
     print(f"analyze_finger_velocity: avg_velocity = {avg_velocity:.4f}")
     return {"avg_velocity": avg_velocity}
 

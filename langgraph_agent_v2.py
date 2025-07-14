@@ -134,17 +134,15 @@ graph = workflow.compile()
 if __name__ == "__main__":
     
     video_path = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
-    prompt = f"Please score the UPDRS finger tapping severity. The video path is: {video_path}"
-    # inputs = {"messages": [HumanMessage(content=prompt)]}
+    prompt = f"Use get_pose_data with video_path=\"{video_path}\"" 
     inputs = {
-        "messages": [
-            HumanMessage(content='Use get_pose_data with video_path="agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"'),
-        ]
+        "messages": [HumanMessage(content=prompt)],
+        "video_path": video_path
     }
 
     for step in graph.stream(inputs, stream_mode="values"):
         last = step["messages"][-1]
-        print("Step: ")
+        print("\nStep: ")
         last.pretty_print()
     
     # visual representation of graph

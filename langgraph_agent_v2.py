@@ -49,7 +49,7 @@ def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
         curr = pose_data[i]
 
         if "RIGHT_INDEX" in prev and "RIGHT_INDEX" in curr:
-            dx = curr["RIGHT_INDDEX"][0] - prev["RIGHT_INDEX"][0]
+            dx = curr["RIGHT_INDEX"][0] - prev["RIGHT_INDEX"][0]
             dy = curr["RIGHT_INDEX"][1] - prev["RIGHT_INDEX"][1]
             velocities.append(np.sqrt(dx ** 2 + dy ** 2) * 30)
         

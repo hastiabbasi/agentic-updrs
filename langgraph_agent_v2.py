@@ -28,7 +28,7 @@ class GraphState(TypedDict):
     video_path: str
     pose_data: Optional[Any]
     velocity_data: Optional[Dict[str, float]]
-    score_output: Optional[dict[str, Any]]
+    score_output: Optional[Dict[str, Any]]
 
 class PoseInput(BaseModel):
     video_path: str = Field(description="The full local path to the video to analyze for UPDRS scoring.")

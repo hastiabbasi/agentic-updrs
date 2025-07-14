@@ -41,7 +41,7 @@ def get_pose_data_tool(input: PoseInput) -> Dict:
 
 @tool 
 def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
-    """Computes average tapping velocity from pose keypoints. Assume pose_data is a list of rames, each frame is a dict of joint name (x,y)."""
+    """Computes average tapping velocity from pose keypoints. Assume pose_data is a list of frames, each frame is a dict of joint name (x,y)."""
     velocities = []
     for i in range(1, len(pose_data)):
         prev = pose_data[i - 1]
@@ -71,7 +71,7 @@ def score_updrs(avg_velocity: float) -> Dict[str, Any]:
         rationale = "Moderate slowing"
     else:
         score = 3
-        rationale = "Sever bradykinesia"
+        rationale = "Severe bradykinesia"
 
     print(f"score_updrs: score = {score}, rationale = {rationale}")
     return {"score": score, "rationale": rationale, "velocity": avg_velocity}

@@ -93,7 +93,7 @@ model = llm.bind_tools(tools)
 # LangGraph nodes
 def call_model(state: GraphState, config: RunnableConfig) -> Dict:
     # use existing message chain
-    response = model.invoke(["messages"], config)
+    response = model.invoke(state["messages"], config)
     print("tool_calls:", getattr(response, "tool_calls", None))
     print("Gemini message content: ", response.content)
     return {"messages": [response]}

@@ -89,9 +89,6 @@ llm = ChatGoogleGenerativeAI(
 
 model = llm.bind_tools(tools)
 
-class AgentState(TypedDict):
-    messages: Annotated[Sequence[BaseMessage], add_messages]
-
 # LangGraph nodes
 def call_model(state: AgentState, config: RunnableConfig) -> Dict:
     # use existing message chain

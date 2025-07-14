@@ -139,7 +139,7 @@ if __name__ == "__main__":
     # inputs = {"messages": [HumanMessage(content=prompt)]}
     inputs = {
         "messages": [
-            HumanMessage(content='Use get_pose_data with video_path="/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"'),
+            HumanMessage(content='{"video_path": "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"}'),
         ]
     }
 

@@ -41,7 +41,7 @@ def get_pose_data_tool(input: PoseInput) -> Dict:
 
 @tool 
 def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
-    """Computes average tapping velocity from pose keypoints."""
+    """Computes average tapping velocity from pose keypoints. Assume pose_data is a list of rames, each frame is a dict of joint name (x,y)."""
     velocities = []
     for i in range(1, len(pose_data)):
         prev = pose_data[i - 1]
@@ -53,7 +53,7 @@ def analyze_finger_velocity(pose_data: Any) -> Dict[str, float]:
             velocities.append(np.sqrt(dx ** 2 + dy ** 2) * 30)
         
     # avg_velocity = float(np.mean(velocities)) if velocities else 0.0
-    avg_velocity = float(np.mean(velocities))
+    avg_velocity = float(np.mean(velocities)) if velocities else 0.0
     print(f"analyze_finger_velocity: avg_velocity = {avg_velocity:.4f}")
     return {"avg_velocity": avg_velocity}
 

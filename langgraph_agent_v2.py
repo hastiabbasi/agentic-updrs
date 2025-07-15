@@ -17,6 +17,8 @@ from IPython.display import Image, display
 # import for video input
 from pydantic import BaseModel, Field
 
+from scipy.signal import find_peaks 
+
 # load env variables
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "GOOGLE_API_KEY not set in environment."
@@ -85,6 +87,21 @@ def score_updrs(avg_amplitude: float) -> dict:
 
     print(f"score_updrs: score = {score}, rationale = {rationale}")
     return {"score": score, "rationale": rationale, "avg_amplitude": avg_amplitude}
+
+@tool 
+def compute_tapping_features(pose_data, fps = 30, distance_threshhold = 0.01):
+    """
+    Extracts high-level motion features from thumb-index distances in pose_data.
+
+    Args:
+        pose_data: List of frames with RIGHT_INDEX and RIGHT_THUMB keypoints.
+        fps: Frames per second of the video.
+        distance_threshold: Minimum distance change to count a tap.
+
+    Returns: 
+        Dictionary of clinically relevant tapping features.
+        
+    """
 
 
 # tool bindings for LangGraph

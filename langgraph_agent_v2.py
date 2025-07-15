@@ -122,6 +122,11 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
     norm_distances /= np.max(norm_distances) if np.max(norm_distances) != 0 else 1
 
     peaks, _ = find_peaks(norm_distances, distance = 3, prominence = distance_threshold)
+    tap_count = len(find_peaks)
+
+    # calculate tap frequency 
+    duration_sec = len(distances) / fps
+    tap_frequency_hz = tap_count / duration_sec if duration_sec > 0 else 0
  
 
 # tool bindings for LangGraph

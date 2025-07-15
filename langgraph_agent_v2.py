@@ -113,6 +113,9 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshhold = 0.01):
             distances.append(dist)
     
     distances = np.array(distances)
+
+    if len(distances) < 5:
+        return {"Error": "Insufficient quantity of frames for valid analysis."}
  
 
 # tool bindings for LangGraph

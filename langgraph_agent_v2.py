@@ -127,6 +127,13 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
     # calculate tap frequency 
     duration_sec = len(distances) / fps
     tap_frequency_hz = tap_count / duration_sec if duration_sec > 0 else 0
+
+    # amplitude stats
+    amplitudes = norm_distances[peaks] if len(peaks) > 0 else []
+    avg_tap_amplitude = float(np.mean(amplitudes)) if len(amplitudes) > 0 else 0.0
+    amplitude_decrement_ratio = (
+        float(amplitudes[-1] / amplitudes[0]) if len(amplitudes) >= 2 and amplitudes[0] !=0 else 1.0
+    )
  
 
 # tool bindings for LangGraph

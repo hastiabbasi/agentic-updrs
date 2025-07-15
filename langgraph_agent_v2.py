@@ -100,9 +100,20 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshhold = 0.01):
 
     Returns: 
         Dictionary of clinically relevant tapping features.
-        
     """
 
+    # compute thumb-index distance per frame 
+    distances = []
+
+    for frame in pose_data:
+        if "RIGHT_INDEX" in frame and "RIGHT_THUMB" in frame:
+            x1, y1 = frame["RIGHT_INDEX"]
+            x2, y2 = frame["RIGHT_THUMB"]
+            dist = np.sqrt((x2 - x1)  ** 2 + (y2 - y1) ** 2)
+            distances.append(dist)
+    
+    distances = np.array(distances)
+ 
 
 # tool bindings for LangGraph
 tools = [get_pose_data_tool, analyze_tap_amplitude, score_updrs]

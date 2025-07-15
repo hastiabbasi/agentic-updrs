@@ -89,7 +89,7 @@ def score_updrs(avg_amplitude: float) -> dict:
     return {"score": score, "rationale": rationale, "avg_amplitude": avg_amplitude}
 
 @tool 
-def compute_tapping_features(pose_data, fps = 30, distance_threshhold = 0.01):
+def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
     """
     Extracts high-level motion features from thumb-index distances in pose_data.
 
@@ -116,6 +116,12 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshhold = 0.01):
 
     if len(distances) < 5:
         return {"Error": "Insufficient quantity of frames for valid analysis."}
+    
+    # normalize detect peaks (taps)
+    norm_distances = distances - np.min(distances)
+    norm_distances /= np.max(norm_distances) if np.max(norm_distances) != 0 else 1
+
+    peaks, _ = find_peaks(norm_distances, distance = 3, prominence = distance_threshold)
  
 
 # tool bindings for LangGraph

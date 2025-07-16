@@ -88,6 +88,12 @@ def score_updrs(avg_amplitude: float) -> dict:
     print(f"score_updrs: score = {score}, rationale = {rationale}")
     return {"score": score, "rationale": rationale, "avg_amplitude": avg_amplitude}
 
+
+class TapFeatureInput(BaseModel):
+    pose_data: list[dict]
+    fps: int = Field(default = 30, description = "Frames per second of the video.")
+    distance_threshhold: float = Field(default = 0.01, description = "Minimum peak prominence to detect a tap.")
+
 @tool("compute_tap_features")
 def compute_tap_features(pose_data, fps = 30, distance_threshold = 0.01):
     """

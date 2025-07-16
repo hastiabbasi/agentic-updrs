@@ -112,3 +112,13 @@ Gemini message content:
 Step: 
 ================================== Ai Message ==================================
 <IPython.core.display.Image object>
+
+## run #5 (implemented compute tap features functionality)
+
+tool_calls: []
+Gemini message content:  I can now use `compute_tap_features` with the returned `pose_data`. What were the frames per second (fps) of the video and the distance threshold you would like to set?
+
+Step: 
+================================== Ai Message ==================================
+
+I can now use `compute_tap_features` with the returned `pose_data`. What were the frames per second (fps) of the video and the distance threshold you would like to set?

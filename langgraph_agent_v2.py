@@ -145,6 +145,16 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
     # rest time ratio
     rest_frames = np.sum(norm_distances < 0.1)
     rest_time_ratio = float(rest_frames / len(distances))
+
+    return {
+        "tap_count": tap_count,
+        "tap_frequency_hz": round(tap_frequency_hz, 2),
+        "avg_tap_amplitude": round(avg_tap_amplitude, 4),
+        "amplitude_decrement_ratio": round(amplitude_decrement_ratio, 2),
+        "intertap_variability": round(intertap_variability, 2),
+        "rest_time_ratio": round(rest_time_ratio, 2),
+        "frames_analyzed": len(distances)
+    }
  
 
 # tool bindings for LangGraph

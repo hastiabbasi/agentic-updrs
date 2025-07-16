@@ -154,9 +154,6 @@ def compute_tap_features(pose_data, fps = 30, distance_threshold = 0.01):
         "intertap_variability": round(intertap_variability, 2),
         "rest_time_ratio": round(rest_time_ratio, 2),
         "frames_analyzed": len(distances),
-        # added fps + distance threshold to returns to bypass Gemini inquiry after running 
-        "fps": fps, 
-        "distance_threshold": distance_threshold
     }
  
 

@@ -134,6 +134,13 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
     amplitude_decrement_ratio = (
         float(amplitudes[-1] / amplitudes[0]) if len(amplitudes) >= 2 and amplitudes[0] !=0 else 1.0
     )
+
+    # inter-tap variability 
+    if len(peaks) >= 2:
+        intertap_intervals = np.diff(peaks) / fps
+        intertap_variability = float(np.std(intertap_intervals))
+    else:
+        intertap_variability = 0.0
  
 
 # tool bindings for LangGraph

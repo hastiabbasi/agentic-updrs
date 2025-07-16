@@ -88,8 +88,8 @@ def score_updrs(avg_amplitude: float) -> dict:
     print(f"score_updrs: score = {score}, rationale = {rationale}")
     return {"score": score, "rationale": rationale, "avg_amplitude": avg_amplitude}
 
-@tool 
-def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
+@tool("compute_tap_features")
+def compute_tap_features(pose_data, fps = 30, distance_threshold = 0.01):
     """
     Extracts high-level motion features from thumb-index distances in pose_data.
 
@@ -158,7 +158,7 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
  
 
 # tool bindings for LangGraph
-tools = [get_pose_data_tool, analyze_tap_amplitude, score_updrs]
+tools = [get_pose_data_tool, compute_tap_features, score_updrs]
 tools_by_name = {t.name: t for t in tools}
 
 # initialize gemini 

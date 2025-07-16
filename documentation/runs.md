@@ -132,3 +132,27 @@ Step:
 ================================== Ai Message ==================================
 
 I can now use `compute_tap_features` to analyze the pose data. What is the fps of the video and the distance_threshold you would like to use?
+
+## run #7 (after adding a pydantic args_schema to define inputs)
+    fps: 30.0
+Traceback (most recent call last):
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/langgraph_agent_v2.py", line 243, in <module>
+    for step in graph.stream(inputs, stream_mode="values"):
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/.venv/lib/python3.10/site-packages/langgraph/pregel/__init__.py", line 2542, in stream
+    for _ in runner.tick(
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/.venv/lib/python3.10/site-packages/langgraph/pregel/runner.py", line 162, in tick
+    run_with_retry(
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/.venv/lib/python3.10/site-packages/langgraph/pregel/retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/.venv/lib/python3.10/site-packages/langgraph/utils/runnable.py", line 623, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/.venv/lib/python3.10/site-packages/langgraph/utils/runnable.py", line 377, in invoke
+    ret = self.func(*args, **kwargs)
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/langgraph_agent_v2.py", line 203, in call_tool
+    result = tool.func(PoseInput(**call["args"]))
+  File "/Users/hastiabbasi/agentic-updrs/agentic-updrs/.venv/lib/python3.10/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PoseInput
+video_path
+  Field required [type=missing, input_value={'distance_threshold': 0....3566284]}], 'fps': 30.0}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing

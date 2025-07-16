@@ -92,10 +92,10 @@ def score_updrs(avg_amplitude: float) -> dict:
 class TapFeatureInput(BaseModel):
     pose_data: list[dict]
     fps: int = Field(default = 30, description = "Frames per second of the video.")
-    distance_threshhold: float = Field(default = 0.01, description = "Minimum peak prominence to detect a tap.")
+    distance_threshold: float = Field(default = 0.01, description = "Minimum peak prominence to detect a tap.")
 
-@tool("compute_tap_features")
-def compute_tap_features(pose_data, fps = 30, distance_threshold = 0.01):
+@tool("compute_tap_features", args_schema = TapFeatureInput)
+def compute_tap_features(input: TapFeatureInput) -> dict:
     """
     Extracts high-level motion features from thumb-index distances in pose_data.
 
@@ -107,6 +107,10 @@ def compute_tap_features(pose_data, fps = 30, distance_threshold = 0.01):
     Returns: 
         Dictionary of clinically relevant tapping features.
     """
+
+    pose_data = input.pose_data
+    fps = input.fps
+    distance_threshold = input.distance_threshold 
 
     # compute thumb-index distance per frame 
     distances = []

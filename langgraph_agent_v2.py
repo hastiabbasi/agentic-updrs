@@ -141,6 +141,10 @@ def compute_tapping_features(pose_data, fps = 30, distance_threshold = 0.01):
         intertap_variability = float(np.std(intertap_intervals))
     else:
         intertap_variability = 0.0
+
+    # rest time ratio
+    rest_frames = np.sum(norm_distances < 0.1)
+    rest_time_ratio = float(rest_frames / len(distances))
  
 
 # tool bindings for LangGraph

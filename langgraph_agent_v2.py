@@ -203,6 +203,7 @@ def call_tool(state: AgentState) -> Dict:
             # in case tool expects an input object instead of kwargs
             result = tool.func(PoseInput(**call["args"]))
 
+    if "pose_data" in state and state["pose_data"] and not any(msg.name == "compute_tap_features" for msg in state["messages"] if isinstance(msg, ToolMessage)):
     # manual fallback - run compute_tap_features if pose_data is present + hasn't been used 
         print("Manually injecting compute_tap_features")
         manual_result = tools_by_name["compute_tap_features"].invoke({

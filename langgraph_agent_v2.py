@@ -32,7 +32,7 @@ class AgentState(TypedDict):
     score_output: Optional[Dict[str, Any]]
 
 class PoseInput(BaseModel):
-    video_path: str = Field(description="The full local path to the video to analyze for UPDRS scoring.")
+    video_path: str = Field(..., description="The full local path to the video to analyze for UPDRS scoring.")
 
 @tool("get_pose_data", args_schema=PoseInput)
 def get_pose_data_tool(input: PoseInput) -> Dict:
@@ -90,7 +90,7 @@ def score_updrs(avg_amplitude: float) -> dict:
 
 
 class TapFeatureInput(BaseModel):
-    pose_data: list[dict]
+    pose_data: list[dict] = Field(..., description = "List of keypoints extracted from the pose estimation tool.")
     fps: int = Field(default = 30, description = "Frames per second of the video.")
     distance_threshold: float = Field(default = 0.01, description = "Minimum peak prominence to detect a tap.")
 

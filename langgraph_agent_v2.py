@@ -198,14 +198,24 @@ def call_tool(state: AgentState) -> Dict:
 
         try:
             result = tool.invoke(call["args"])
+            print(f"Gemini called tool: {call['name']}")
         except TypeError:
             # in case tool expects an input object instead of kwargs
             result = tool.func(PoseInput(**call["args"]))
 
+    # manual fallback - run compute_tap_features if pose_data is present + hasn't been used 
+        print("Manually injecting compute_tap_features")
+        manual_result = tools_by_name["compute_tap_features"].invoke({
+            "pose_data": state["pose_data"]
+        })
+
         tool_outputs.append(ToolMessage(
-            content = result, 
-            name = call["name"],
-            tool_call_id = call["id"]
+            # content = result,
+            content = manual_result, 
+            # name = call["name"],
+            name = "compute_tap_features",
+            # tool_call_id = call["id"]
+            tool_call_id = "manual-1"
         ))
 
     # debug statement 

@@ -166,3 +166,7 @@ Step:
 
 I can do that. What is the frame rate (fps) of the video? The distance threshold is another parameter you can provide. The default value for that is 0.05.
 <IPython.core.display.Image object>
+
+## run #9 (after adding manual fallback that runs compute_tap_features if pose_data is present + hasn't been used)
+    raise ChatGoogleGenerativeAIError(
+langchain_google_genai.chat_models.ChatGoogleGenerativeAIError: Invalid argument provided to Gemini: 400 * GenerateContentRequest.contents[2].parts: contents.parts must not be empty.

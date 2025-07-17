@@ -156,3 +156,13 @@ pydantic_core._pydantic_core.ValidationError: 1 validation error for PoseInput
 video_path
   Field required [type=missing, input_value={'distance_threshold': 0....3566284]}], 'fps': 30.0}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.11/v/missing
+
+## run #8 (after making minor hcnages to class definitions)
+tool_calls: []
+Gemini message content:  I can do that. What is the frame rate (fps) of the video? The distance threshold is another parameter you can provide. The default value for that is 0.05.
+
+Step: 
+================================== Ai Message ==================================
+
+I can do that. What is the frame rate (fps) of the video? The distance threshold is another parameter you can provide. The default value for that is 0.05.
+<IPython.core.display.Image object>

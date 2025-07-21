@@ -200,7 +200,8 @@ def call_tool(state: AgentState) -> Dict:
 
         # schema_cls = tool.args_schema
         # result = tool.invoke(schema_cls(video_path=video_path))
-        result = tool.invoke(PoseInput(video_path=video_path))
+        # result = tool.invoke(PoseInput(video_path=video_path))
+        result = tools_by_name["get_pose_data"].invoke(PoseInput(video_path=video_path))
 
         print("Tool:", type(tool))
         print("Schema:", tool.args_schema)

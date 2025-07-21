@@ -211,7 +211,7 @@ def call_tool(state: AgentState) -> Dict:
         print("Manually injecting compute_tap_features")
         manual_result = tools_by_name["compute_tap_features"].invoke({
             "pose_data": state["pose_data"],
-            # added fps and distance threshhold to manual injection 
+            # added fps and distance threshold to manual injection 
             "fps": 30,
             "distance_threshold": 0.01
         })
@@ -223,8 +223,6 @@ def call_tool(state: AgentState) -> Dict:
                 name = "compute_tap_features",
                 tool_call_id = "manual-1"
             ))
-        else:
-            print(f"Skipping tool call due ot empty result")
 
     return {"messages": tool_outputs}
 

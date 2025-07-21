@@ -195,12 +195,13 @@ def call_tool(state: AgentState) -> Dict:
 
     for call in getattr(last_msg, "tool_calls", []):
 
-        tool = tools_by_name["get_pose_data"]
-
-        result = tools_by_name["get_pose_data"].invoke(PoseInput(video_path=video_path))
-
-        print("Tool:", type(tool))
-        print("Schema:", tool.args_schema)
+        tool = tools_by_name[call["name"]]
+        schema = tool.args_schema
+        try:
+            result = tool.invoke(schema(**call["args"]))
+        except Exception as e:
+            print(f"Tool '{call['name']}' failed: {e}")
+            continue
 
         if result: 
             tool_outputs.append(ToolMessage(
@@ -208,6 +209,8 @@ def call_tool(state: AgentState) -> Dict:
                 name = call["name"],
                 tool_call_id = call["id"]
             ))
+        else:
+            print(f"Tool {call['name']} returned no result")
 
         print(f"Called {call['name']} with args: {call['args']}")
 
@@ -216,7 +219,6 @@ def call_tool(state: AgentState) -> Dict:
         print("Manually injecting compute_tap_features")
         manual_result = tools_by_name["compute_tap_features"].invoke({
             "pose_data": state["pose_data"],
-            # added fps and distance threshold to manual injection 
             "fps": 30,
             "distance_threshold": 0.01
         })
@@ -228,6 +230,8 @@ def call_tool(state: AgentState) -> Dict:
                 name = "compute_tap_features",
                 tool_call_id = "manual-1"
             ))
+        else:
+            print("Skipped compute_tap_features due to empty result")
 
     return {"messages": tool_outputs}
 

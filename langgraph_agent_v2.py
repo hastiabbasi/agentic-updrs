@@ -195,12 +195,7 @@ def call_tool(state: AgentState) -> Dict:
 
     for call in getattr(last_msg, "tool_calls", []):
         tool = tools_by_name[call["name"]]
-
-        try:
-            result = tool.invoke(call["args"])
-        except TypeError:
-            # in case tool expects an input object instead of kwargs
-            result = tool.func(PoseInput(**call["args"]))
+        result = tool.invoke(call["args"])
 
         if result: 
             tool_outputs.append(ToolMessage(

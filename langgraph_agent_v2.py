@@ -233,6 +233,10 @@ def call_tool(state: AgentState) -> Dict:
         else:
             print("Skipped compute_tap_features due to empty result")
 
+    print("Tool outputs:")
+    for msg in tool_outputs:
+        print(f" - {msg.name}: {msg.content}")
+
     return {"messages": tool_outputs}
 
 def should_continue(state: AgentState) -> str:

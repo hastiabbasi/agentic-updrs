@@ -203,7 +203,7 @@ def call_tool(state: AgentState) -> Dict:
             print(f"Tool '{call['name']}' failed: {e}")
             continue
 
-        if result: 
+        if result and result != {}: 
             tool_outputs.append(ToolMessage(
                 content = result, 
                 name = call["name"],
@@ -224,7 +224,7 @@ def call_tool(state: AgentState) -> Dict:
         })
 
         # skip empty results 
-        if manual_result:
+        if manual_result and manual_result != {}:
             tool_outputs.append(ToolMessage(
                 content = manual_result, 
                 name = "compute_tap_features",

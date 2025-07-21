@@ -198,13 +198,23 @@ def call_tool(state: AgentState) -> Dict:
 
         try:
             result = tool.invoke(call["args"])
-            print(f"Gemini called tool: {call['name']}")
         except TypeError:
             # in case tool expects an input object instead of kwargs
             result = tool.func(PoseInput(**call["args"]))
 
+        if result: 
+            tool_outputs.append(ToolMessage(
+                content = result, 
+                name = call["name"],
+                tool_call_id = call["id"]
+            ))
+        else:
+            print(f"Skipping tool {call['name']} due to an empty result.")
+
+        print(f"Called {call['name']} with args: {call['args']}")
+
+    # manual fallback if Gemini didn't call compute_tap_features - run if pose_data is present + hasn't been used 
     if "pose_data" in state and state["pose_data"] and not any(msg.name == "compute_tap_features" for msg in state["messages"] if isinstance(msg, ToolMessage)):
-    # manual fallback - run compute_tap_features if pose_data is present + hasn't been used 
         print("Manually injecting compute_tap_features")
         manual_result = tools_by_name["compute_tap_features"].invoke({
             "pose_data": state["pose_data"]
@@ -213,18 +223,13 @@ def call_tool(state: AgentState) -> Dict:
         # skip empty results 
         if manual_result:
             tool_outputs.append(ToolMessage(
-                # content = result,
                 content = manual_result, 
-                # name = call["name"],
                 name = "compute_tap_features",
-                # tool_call_id = call["id"]
                 tool_call_id = "manual-1"
             ))
         else:
             print(f"Skipping tool call due ot empty result")
 
-    # debug statement 
-    print(f"Calling {call['name']} with args: {call['args']}")
     return {"messages": tool_outputs}
 
 def should_continue(state: AgentState) -> str:

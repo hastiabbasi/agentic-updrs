@@ -251,14 +251,6 @@ workflow.add_edge("tools", "llm")
 graph = workflow.compile()
 
 if __name__ == "__main__":
-
-    # debug
-    print("Type of get_pose_data_tool:", type(get_pose_data_tool))
-    
-    if hasattr(get_pose_data_tool, "args_schema"):
-        print("args_schema:", get_pose_data_tool.args_schema)
-    else:
-        print("get_pose_data_tool has no args_schema")
     
     video_path = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
     prompt = f"Use get_pose_data with video_path=\"{video_path}\"" 

@@ -210,14 +210,18 @@ def call_tool(state: AgentState) -> Dict:
             "pose_data": state["pose_data"]
         })
 
-        tool_outputs.append(ToolMessage(
-            # content = result,
-            content = manual_result, 
-            # name = call["name"],
-            name = "compute_tap_features",
-            # tool_call_id = call["id"]
-            tool_call_id = "manual-1"
-        ))
+        # skip empty results 
+        if manual_result:
+            tool_outputs.append(ToolMessage(
+                # content = result,
+                content = manual_result, 
+                # name = call["name"],
+                name = "compute_tap_features",
+                # tool_call_id = call["id"]
+                tool_call_id = "manual-1"
+            ))
+        else:
+            print(f"Skipping tool call due ot empty result")
 
     # debug statement 
     print(f"Calling {call['name']} with args: {call['args']}")

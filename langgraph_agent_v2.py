@@ -202,6 +202,9 @@ def call_tool(state: AgentState) -> Dict:
         # result = tool.invoke(schema_cls(video_path=video_path))
         result = tool.invoke(PoseInput(video_path=video_path))
 
+        print("Tool:", type(tool))
+        print("Schema:", tool.args_schema)
+
         if result: 
             tool_outputs.append(ToolMessage(
                 content = result, 

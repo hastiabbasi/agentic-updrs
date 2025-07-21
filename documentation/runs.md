@@ -170,3 +170,13 @@ I can do that. What is the frame rate (fps) of the video? The distance threshold
 ## run #9 (after adding manual fallback that runs compute_tap_features if pose_data is present + hasn't been used)
     raise ChatGoogleGenerativeAIError(
 langchain_google_genai.chat_models.ChatGoogleGenerativeAIError: Invalid argument provided to Gemini: 400 * GenerateContentRequest.contents[2].parts: contents.parts must not be empty.
+
+## run #10 (after fixing appending tool results)
+tool_calls: []
+Gemini message content:  I can do that. What is the fps of the video and what is the distance_threshold you would like to use?
+
+Step: 
+================================== Ai Message ==================================
+
+I can do that. What is the fps of the video and what is the distance_threshold you would like to use?
+<IPython.core.display.Image object>

@@ -198,7 +198,7 @@ def call_tool(state: AgentState) -> Dict:
         # result = tool.invoke(call["args"])
         tool = tools_by_name["get_pose_data"]
 
-        schema_cls = tools.args_schema
+        schema_cls = tool.args_schema
         result = tool.invoke(schema_cls(video_path=video_path))
 
         if result: 

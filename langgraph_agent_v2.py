@@ -195,7 +195,10 @@ def call_tool(state: AgentState) -> Dict:
 
     for call in getattr(last_msg, "tool_calls", []):
         tool = tools_by_name[call["name"]]
-        result = tool.invoke(call["args"])
+        # result = tool.invoke(call["args"])
+
+        schema_cls = tools.args_schema
+        result = tool.invoke(schema_cls(video_path=video_path))
 
         if result: 
             tool_outputs.append(ToolMessage(

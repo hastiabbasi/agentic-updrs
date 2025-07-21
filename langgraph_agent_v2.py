@@ -210,7 +210,10 @@ def call_tool(state: AgentState) -> Dict:
     if "pose_data" in state and state["pose_data"] and not any(msg.name == "compute_tap_features" for msg in state["messages"] if isinstance(msg, ToolMessage)):
         print("Manually injecting compute_tap_features")
         manual_result = tools_by_name["compute_tap_features"].invoke({
-            "pose_data": state["pose_data"]
+            "pose_data": state["pose_data"],
+            # added fps and distance threshhold to manual injection 
+            "fps": 30,
+            "distance_threshold": 0.01
         })
 
         # skip empty results 

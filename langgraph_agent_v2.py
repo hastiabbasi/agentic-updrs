@@ -203,8 +203,6 @@ def call_tool(state: AgentState) -> Dict:
                 name = call["name"],
                 tool_call_id = call["id"]
             ))
-        else:
-            print(f"Skipping tool {call['name']} due to an empty result.")
 
         print(f"Called {call['name']} with args: {call['args']}")
 

@@ -194,13 +194,9 @@ def call_tool(state: AgentState) -> Dict:
     last_msg = state["messages"][-1]
 
     for call in getattr(last_msg, "tool_calls", []):
-        # tool = tools_by_name[call["name"]]
-        # result = tool.invoke(call["args"])
+
         tool = tools_by_name["get_pose_data"]
 
-        # schema_cls = tool.args_schema
-        # result = tool.invoke(schema_cls(video_path=video_path))
-        # result = tool.invoke(PoseInput(video_path=video_path))
         result = tools_by_name["get_pose_data"].invoke(PoseInput(video_path=video_path))
 
         print("Tool:", type(tool))

@@ -198,7 +198,10 @@ def call_tool(state: AgentState) -> Dict:
         tool = tools_by_name[call["name"]]
         schema = tool.args_schema
         try:
-            result = tool.invoke(schema(**call["args"]))
+            if hasattr(tool, "args_schema") and tool.args_schema:
+                result = tool.invoke(tool.args_schema(**call["args"]))
+            else:
+                result = tool.invoke(call["args"])
         except Exception as e:
             print(f"Tool '{call['name']}' failed: {e}")
             continue

@@ -242,15 +242,22 @@ def call_tool(state: AgentState) -> Dict:
             "distance_threshold": 0.01
         })
 
-        # skip empty results 
-        if manual_result and manual_result != {}:
+        # # skip empty results 
+        # if manual_result and manual_result != {}:
+        #     tool_outputs.append(ToolMessage(
+        #         content = manual_result, 
+        #         name = "compute_tap_features",
+        #         tool_call_id = "manual-1"
+        #     ))
+        # else:
+        #     print("Skipped compute_tap_features due to empty result")
+
+        if isinstance(manual_result, dict) and manual_result:
             tool_outputs.append(ToolMessage(
-                content = manual_result, 
+                content = manual_result,
                 name = "compute_tap_features",
                 tool_call_id = "manual-1"
             ))
-        else:
-            print("Skipped compute_tap_features due to empty result")
 
     print("Tool outputs:")
     for msg in tool_outputs:

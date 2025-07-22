@@ -56,3 +56,29 @@ def call_model(messages: list[BaseMessage]):
     print("tool_calls:", getattr(response, "tool_calls", None))
 
     return response
+
+if __name__ == "__main__":
+    video_path = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
+    prompt = f"Analyze this video: {video_path}"
+    messages = [HumanMessage(content=prompt)]
+
+    # trigger tool call
+    ai_response = call_model(messages)
+
+    new_messages = [messages[0], ai_response]
+
+    for call in getattr(ai_response, "tool_calls", []):
+        tool = tools_by_name[call["name"]]
+        result = tool.invoke(tool.args_schema(**call["args"]))
+        print(f"Tool result: {result}")
+        msg = ToolMessage(
+            content = result, 
+            name = call["name"],
+            tool_call_id = call["id"]
+        )
+
+        new_messages.append(msg)
+
+    if len(new_messages) > 2:
+        print("\n Sending tool result back to Gemini")
+        final_response = call_model(new_messages)

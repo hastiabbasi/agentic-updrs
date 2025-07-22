@@ -13,9 +13,13 @@ class PoseInput(BaseModel):
     video_path: str = Field(..., description="Local path to the UPDRS video.")
 
 @tool("get_pose_data", args_schema=PoseInput)
-
 def get_pose_data(input: PoseInput) -> dict:
     """Extracts RIGHT_INDEX and RIGHT_THUMB keypoints from a video using MediaPipe."""
     print(f"get_pose_data called on: {input.video_path}")
     # not actual values for now; test
     return {"pose_data": "simulated keypoint data"}
+
+# registered the tool 
+tools = [get_pose_data]
+tools_by_name = {t.name: t for t in tools}
+

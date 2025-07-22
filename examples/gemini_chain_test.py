@@ -23,3 +23,10 @@ def get_pose_data(input: PoseInput) -> dict:
 tools = [get_pose_data]
 tools_by_name = {t.name: t for t in tools}
 
+# gemini LLM + tool binding
+llm = ChatGoogleGenerativeAI(
+    model = "gemini-2.5-pro",
+    temperature = 0,
+    convert_system_message_tohuman = True,
+    streaming = False
+)

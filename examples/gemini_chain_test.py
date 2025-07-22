@@ -12,12 +12,13 @@ assert os.getenv("GOOGLE_API_KEY"), "GOOGLE_API_KEY not set in environment."
 class PoseInput(BaseModel):
     video_path: str = Field(..., description="Local path to the UPDRS video.")
 
-@tool("get_pose_data", args_schema=PoseInput)
-def get_pose_data(input: PoseInput) -> Dict:
+def get_pose_data_func(input: PoseInput) -> Dict:
     """Extracts RIGHT_INDEX and RIGHT_THUMB keypoints from a video using MediaPipe."""
     print(f"get_pose_data called on: {input.video_path}")
     # not actual values for now; test
     return {"pose_data": "simulated keypoint data"}
+
+get_pose_data = tool("get_pose_data", args_schema=PoseInput)(get_pose_data_func)
 
 # registered the tool 
 tools = [get_pose_data]

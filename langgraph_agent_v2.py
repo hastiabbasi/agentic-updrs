@@ -190,6 +190,16 @@ def call_model(state: AgentState, config: RunnableConfig) -> Dict:
     print("Gemini message content: ", response.content)
     return {"messages": [response]}
 
+def safe_tool_message(content, name, tool_call_id):
+    """Ensure ToolMessage content is safe and non-empty."""
+    if isinstance(content, dict) and content and any(v not in [None, "", {}, []] for v in content.values()):
+        return ToolMessage(content = content, name = name, tool_call_id = tool_call_id)
+    elif isinstance(content, str) and content.strip():
+        return ToolMessage(content = content, name = name, tool_call_id = tool_call_id)
+    else:
+        print(f"Tool '{name}' returned empty or invalid content.")
+        return None
+
 def call_tool(state: AgentState) -> Dict:
     tool_outputs = []
     last_msg = state["messages"][-1]

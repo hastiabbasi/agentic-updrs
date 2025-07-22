@@ -204,76 +204,58 @@ def call_tool(state: AgentState) -> Dict:
     tool_outputs = []
     last_msg = state["messages"][-1]
 
+    # handle gemini invoked tool calls
     for call in getattr(last_msg, "tool_calls", []):
-
         tool = tools_by_name[call["name"]]
-        schema = tool.args_schema
+
         try:
             if hasattr(tool, "args_schema") and tool.args_schema:
-                result = tool.invoke(tool.args_schema(**call["args"]))
-            else:
+                args_obj = tool.args_schema(**call["args"])
+                result = tool.invoke(args_obj)
+            else: 
                 result = tool.invoke(call["args"])
         except Exception as e:
             print(f"Tool '{call['name']}' failed: {e}")
             continue
 
-        # if result and result != {}: 
-        #     tool_outputs.append(ToolMessage(
-        #         content = result, 
-        #         name = call["name"],
-        #         tool_call_id = call["id"]
-        #     ))
-        # else:
-        #     print(f"Tool {call['name']} returned no result")
-        #
-        # print(f"Called {call['name']} with args: {call['args']}")
+        msg = safe_tool_message(result, call["name"], call["id"])
 
-        if isinstance(result, Dict) and result:
-            tool_outputs.append(ToolMessage(
-                content = result,
-                name = call["name"],
-                tool_call_id = call["id"]
-            ))
-        elif isinstance(result, str) and result.strip():
-            tool_outputs.append(ToolMessage(
-                content =result,
-                name = call["name"],
-                tool_call_id = call["id"]
-            ))
-        else:
-            print(f"Skipped {call['name']} due to empty or invalid content")
+        if msg: 
+            tool_outputs.append(msg)
 
-    # manual fallback if Gemini didn't call compute_tap_features - run if pose_data is present + hasn't been used 
-    if "pose_data" in state and state["pose_data"] and not any(msg.name == "compute_tap_features" for msg in state["messages"] if isinstance(msg, ToolMessage)):
-        print("Manually injecting compute_tap_features")
-        manual_result = tools_by_name["compute_tap_features"].invoke({
-            "pose_data": state["pose_data"],
-            "fps": 30,
-            "distance_threshold": 0.01
-        })
+        print(f"Called {call['name']} with args: {call['args']}")
 
-        # # skip empty results 
-        # if manual_result and manual_result != {}:
-        #     tool_outputs.append(ToolMessage(
-        #         content = manual_result, 
-        #         name = "compute_tap_features",
-        #         tool_call_id = "manual-1"
-        #     ))
-        # else:
-        #     print("Skipped compute_tap_features due to empty result")
 
-        if isinstance(manual_result, dict) and manual_result:
-            tool_outputs.append(ToolMessage(
-                content = manual_result,
-                name = "compute_tap_features",
-                tool_call_id = "manual-1"
-            ))
+    # manual fallback --> run compute_tap_features if pose_data exists
+    if("pose_data" in state and state["pose_data"] and not any(msg.name == "compute_tap_features" for msg in state["messages"] if isinstance(msg, ToolMessage))):
+        print("Manually injecting compute_tap_features.")
 
-    print("Tool outputs:")
+        try:
+            manual_result = tools_by_name["compute_tap_features"].invoke({
+                "pose_data": state["pose_data"],
+                "fps": 30,
+                "distance_threshold": 0.01
+            })
+
+            msg = safe_tool_message(manual_result, "compute_tap_features", "manual-1")
+
+            if msg:
+                tool_outputs.append(msg)
+
+        except Exception as e:
+
+            print(f"Manual fallback for compute_tap_features failed: {e}")
+
+    # additional safety check
+    for msg in tool_outputs:
+        assert msg.content not in [None, {}, ""], f"ToolMessage has empty content: {msg}"
+
+    print("Tool Outputs:")
+    
     for msg in tool_outputs:
         print(f" - {msg.name}: {msg.content}")
 
-    return {"messages": tool_outputs}
+    return {"messages": tool_outputs}   
 
 def should_continue(state: AgentState) -> str:
     messages = state["messages"]

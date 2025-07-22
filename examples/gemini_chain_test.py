@@ -31,6 +31,8 @@ llm = ChatGoogleGenerativeAI(
     streaming = False
 )
 
+model = llm.bind_tools(tools)
+
 def is_valid_message(msg: BaseMessage) -> bool:
     content = getattr(msg, "content", None)
 
@@ -39,3 +41,18 @@ def is_valid_message(msg: BaseMessage) -> bool:
     if isinstance(content, dict):
         return any(v not in (None, "", {}, []) for v in content.values())
     return False
+
+def call_model(messages: list[BaseMessage]):
+    clean_messages = [msg for msg in messages if is_valid_message(msg)]
+
+    print("Cleaned messages:")
+    
+    for i, msg in enumerate(clean_messages):
+        print(f"    [{i}] {type(msg).__name__}: {repr(msg.content)}")
+
+    response = model.invoke(clean_messages)
+
+    print("\n Gemini Response:", response.content)
+    print("tool_calls:", getattr(response, "tool_calls", None))
+
+    return response

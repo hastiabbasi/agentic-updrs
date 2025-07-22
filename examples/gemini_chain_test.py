@@ -71,7 +71,11 @@ if __name__ == "__main__":
     for call in getattr(ai_response, "tool_calls", []):
         tool = tools_by_name[call["name"]]
         args = tool.args_schema(**call["args"])
-        result = tool.invoke(args)
+        # result = tool.invoke(args)
+        result = get_pose_data.invoke(PoseInput(video_path="/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"))
+
+        print("tool type:",  type(get_pose_data))
+        print("result:" get_pose_data.invoke(PoseInput(video_path="/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4")))
 
         if result:
             tool_msg = ToolMessage(
@@ -84,4 +88,4 @@ if __name__ == "__main__":
 
     if len(messages) > 2:
         print("\n Sending tool result back to Gemini")
-        final_response = call_model(new_messages)
+        final_response = call_model(messages)

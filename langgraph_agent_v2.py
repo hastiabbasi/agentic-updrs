@@ -207,16 +207,31 @@ def call_tool(state: AgentState) -> Dict:
             print(f"Tool '{call['name']}' failed: {e}")
             continue
 
-        if result and result != {}: 
+        # if result and result != {}: 
+        #     tool_outputs.append(ToolMessage(
+        #         content = result, 
+        #         name = call["name"],
+        #         tool_call_id = call["id"]
+        #     ))
+        # else:
+        #     print(f"Tool {call['name']} returned no result")
+        #
+        # print(f"Called {call['name']} with args: {call['args']}")
+
+        if isinstance(result, Dict) and result:
             tool_outputs.append(ToolMessage(
-                content = result, 
+                content = result,
+                name = call["name"],
+                tool_call_id = call["id"]
+            ))
+        elif isinstance(result, str) and result.strip():
+            tool_outputs.append(ToolMessage(
+                content =result,
                 name = call["name"],
                 tool_call_id = call["id"]
             ))
         else:
-            print(f"Tool {call['name']} returned no result")
-
-        print(f"Called {call['name']} with args: {call['args']}")
+            print(f"Skipped {call['name']} due to empty or invalid content")
 
     # manual fallback if Gemini didn't call compute_tap_features - run if pose_data is present + hasn't been used 
     if "pose_data" in state and state["pose_data"] and not any(msg.name == "compute_tap_features" for msg in state["messages"] if isinstance(msg, ToolMessage)):

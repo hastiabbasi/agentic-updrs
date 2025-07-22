@@ -30,3 +30,12 @@ llm = ChatGoogleGenerativeAI(
     convert_system_message_tohuman = True,
     streaming = False
 )
+
+def is_valid_message(msg: BaseMessage) -> bool:
+    content = getattr(msg, "content", None)
+
+    if isinstance(content, str):
+        return content.strip() != ""
+    if isinstance(content, dict):
+        return any(v not in (None, "", {}, []) for v in content.values())
+    return False

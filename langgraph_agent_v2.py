@@ -125,7 +125,8 @@ def compute_tap_features(input: TapFeatureInput) -> dict:
     distances = np.array(distances)
 
     if len(distances) < 5:
-        return {"Error": "Insufficient quantity of frames for valid analysis."}
+        print("Not enough frames, returning fallback message.")
+        return {"message": "Could not analyze tap features - not enough frames."}
     
     # normalize detect peaks (taps)
     norm_distances = distances - np.min(distances)

@@ -66,20 +66,22 @@ if __name__ == "__main__":
     # trigger tool call
     ai_response = call_model(messages)
 
-    new_messages = [messages[0], ai_response]
+    messages.append(ai_response)
 
     for call in getattr(ai_response, "tool_calls", []):
         tool = tools_by_name[call["name"]]
-        result = tool.invoke(tool.args_schema(**call["args"]))
-        print(f"Tool result: {result}")
-        msg = ToolMessage(
-            content = result, 
-            name = call["name"],
-            tool_call_id = call["id"]
-        )
+        args = tool.args_schema(**call["args"])
+        result = tool.invoke(args)
 
-        new_messages.append(msg)
+        if result:
+            tool_msg = ToolMessage(
+                name = call["name"],
+                content = result, 
+                tool_call_id = call["id"]
+            )
 
-    if len(new_messages) > 2:
+            messages.append(tool_msg)
+
+    if len(messages) > 2:
         print("\n Sending tool result back to Gemini")
         final_response = call_model(new_messages)

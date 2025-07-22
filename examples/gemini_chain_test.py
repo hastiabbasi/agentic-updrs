@@ -75,7 +75,7 @@ if __name__ == "__main__":
         result = get_pose_data.invoke(PoseInput(video_path="/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"))
 
         print("tool type:",  type(get_pose_data))
-        print("result:" get_pose_data.invoke(PoseInput(video_path="/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4")))
+        print("result:", get_pose_data.invoke(PoseInput(video_path="/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4")))
 
         if result:
             tool_msg = ToolMessage(

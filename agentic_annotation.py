@@ -15,3 +15,25 @@ def ingestion_agent(state):
     ]
 
     return state
+
+def frame_extraction_agent(state):
+    print("[Frame Extraction] Extracting frames...")
+    video_frames = {}
+
+    for path in state["video_paths"]:
+        cap = cv2.VideoCapture(path)
+        frames = []
+
+        while True:
+            ret, frame = cap.read()
+
+            if not ret:
+                break
+
+            frames.append(frame)
+
+        cap.release()
+        video_frames[path] = frames
+    
+    state["video_frames"] = video_frames
+    return state

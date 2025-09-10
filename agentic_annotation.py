@@ -99,7 +99,7 @@ def run_pipeline():
     graph.set_entry_point("Ingest")
 
     graph.add_edge("Ingest", "ExtractFrames")
-    graph.add_edge("ExtractFrames", "Pose_Estimation")
+    graph.add_edge("ExtractFrames", "PoseEstimation")
     graph.add_edge("PoseEstimation", "Labeling")
     graph.add_edge("Labeling", "Annotation")
     graph.add_edge("Annotation", "TrainModel")

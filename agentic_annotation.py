@@ -1,7 +1,7 @@
 import os
 import cv2
 import json
-from langgraph.graph import StateGrpah, END
+from langgraph.graph import StateGraph, END
 
 def ingestion_agent(state):
     print("[Ingestion] Loading raw videos...")
@@ -65,6 +65,13 @@ def labeling_agent(state):
         labels[path] = movement_labels
 
     state["labels"] = labels
+    return state
+
+def annotation_agent(state):
+    print("[Annotation] Saving annotated labels...")
+    os.makedirs("data/annotated_data", exist_ok = True)
+    with open("data/annotated_data/annotations.java", "w") as f:
+        json.dump(state["labels"], f, indent=2)
     return state
 
 # placeholder for fine-tuning Qwen2-VL

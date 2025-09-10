@@ -66,3 +66,9 @@ def labeling_agent(state):
 
     state["labels"] = labels
     return state
+
+# placeholder for fine-tuning Qwen2-VL
+def training_agent(state):
+    print("[Training] Fine-tuning Qwen2-VL (stub)...")
+
+    return state

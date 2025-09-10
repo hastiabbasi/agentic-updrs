@@ -48,3 +48,10 @@ def pose_estimation_agent(state):
     return state
 
 
+def classify_movement(keypoint_sequence):
+    if len(keypoint_sequence) == 0:
+        return ["no_detection"]
+    elif len(keypoint_sequence) > 60:
+        return ["normal gait", "normal arm swing"]
+    else:
+        return ["reduced arm swing", "slowness"]

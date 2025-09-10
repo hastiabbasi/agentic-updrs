@@ -87,7 +87,7 @@ def evaluation_agent(state):
 
 
 def run_pipeline():
-    graph = StateGraph()
+    graph = StateGraph(state_schema=dict)
     graph.add_node("Ingest", ingestion_agent)
     graph.add_node("ExtractFrames", frame_extraction_agent)
     graph.add_node("PoseEstimation", pose_estimation_agent)

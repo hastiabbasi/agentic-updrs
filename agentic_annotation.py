@@ -72,3 +72,8 @@ def training_agent(state):
     print("[Training] Fine-tuning Qwen2-VL (stub)...")
 
     return state
+
+def evaluation_agent(state):
+    print("[Evaluation] Prompting Qwen2-VL with clinical-style prompts (stub)...")
+
+    return state

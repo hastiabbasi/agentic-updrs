@@ -55,3 +55,14 @@ def classify_movement(keypoint_sequence):
         return ["normal gait", "normal arm swing"]
     else:
         return ["reduced arm swing", "slowness"]
+    
+def labeling_agent(state):
+    print("[Labeling] Inferring movement types...")
+    labels = {}
+
+    for path, keypoints in state["keypoints"].items():
+        movement_labels = classify_movement(keypoints)
+        labels[path] = movement_labels
+
+    state["labels"] = labels
+    return state

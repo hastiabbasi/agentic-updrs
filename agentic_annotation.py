@@ -84,3 +84,16 @@ def evaluation_agent(state):
     print("[Evaluation] Prompting Qwen2-VL with clinical-style prompts (stub)...")
 
     return state
+
+
+def run_pipeline():
+    graph = StateGraph()
+    graph.add_node("Ingest", ingestion_agent)
+    graph.add_node("ExtractFrames", frame_extraction_agent)
+    graph.add_node("PoseEstimation", pose_estimation_agent)
+    graph.add_node("Labeling", labeling_agent)
+    graph.add_node("Annotation", annotation_agent)
+    graph.add_node("TrainModel", training_agent)
+    graph.add_node("Evaluate", evaluation_agent)
+
+    

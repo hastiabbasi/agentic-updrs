@@ -111,3 +111,6 @@ def run_pipeline():
     initial_state = {}
     workflow.invoke(initial_state)
 
+if __name__ == "__main__":
+    run_pipeline()
+

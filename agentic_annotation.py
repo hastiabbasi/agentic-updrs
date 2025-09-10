@@ -96,4 +96,14 @@ def run_pipeline():
     graph.add_node("TrainModel", training_agent)
     graph.add_node("Evaluate", evaluation_agent)
 
+    graph.set_entry_point("Ingest")
+
+    graph.add_edge("Ingest", "ExtractFrames")
+    graph.add_edge("Extract_Frames", "Pose_Estimation")
+    graph.add_edge("PoseEstimation", "Labeling")
+    graph.add_edge("Labeling", "Annotation")
+    graph.add_edge("Annotation", "TrainModel")
+    graph.add_edge("TrainModel", "Evaluate")
     
+    graph.add_edge("Evaluate", END)
+

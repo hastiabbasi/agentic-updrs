@@ -37,3 +37,12 @@ def frame_extraction_agent(state):
     
     state["video_frames"] = video_frames
     return state
+
+def pose_estimation_agent(state):
+    print("[Pose Estimation] (Stub) Generating keypoints...")
+    keypoints = {}
+
+    for path, frames in state["video_frames"].items():
+        keypoints[path] = [{"keypoints": f"pose_{i}"} for i in range(len(frames))]
+    state["keypoints"] = keypoints
+    return stateß

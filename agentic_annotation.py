@@ -5,7 +5,7 @@ from langgraph.graph import StateGraph, END
 
 def ingestion_agent(state):
     print("[Ingestion] Loading raw videos...")
-    video_dir = "/Users/hastiabbasi/agentic-updrs/agentic-updrs/FT_vids/sub1vid7.mp4"
+    video_dir = "data/raw_videos"
 
     state["video_paths"] = [
         os.path.join(video_dir, f)

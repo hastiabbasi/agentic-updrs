@@ -107,3 +107,7 @@ def run_pipeline():
     
     graph.add_edge("Evaluate", END)
 
+    workflow = graph.compile()
+    initial_state = {}
+    workflow.invoke(initial_state)
+

@@ -45,4 +45,6 @@ def pose_estimation_agent(state):
     for path, frames in state["video_frames"].items():
         keypoints[path] = [{"keypoints": f"pose_{i}"} for i in range(len(frames))]
     state["keypoints"] = keypoints
-    return stateß
+    return state
+
+
